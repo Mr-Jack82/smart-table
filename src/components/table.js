@@ -31,12 +31,20 @@ export function initTable(settings, onAction) {
     const render = (data) => {
         const nextRows = data.map(item => {
           const row = cloneTemplate(rowTemplate);
+          const elements = row.elements;
 
-          Object.keys(item).forEach(key => {
-            if (key in row.elements) {
-              row.elements[key].textContent = item[key];
+          for (const key in item) {
+            if (!Object.prototype.hasOwnProperty.call(elements, key)) continue;
+
+            const el = elements[key];
+            const value = item[key];
+
+            if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) {
+              el.value = value;
+            } else {
+              el.textContent = value;
             }
-          });
+          }
 
           return row;
         });

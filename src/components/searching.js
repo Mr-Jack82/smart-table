@@ -13,15 +13,12 @@ export function initSearching(searchField) {
     ],
   );
 
-  return (data, state, action) => {
+  return (data, state) => {
     // @todo: #5.2 — применить компаратор
     const searchValue = state[searchField] ?? "";
-    if (!searchValue) {
-      return { data, state };
+    if (!searchValue.trim()) {
+      return data;
     }
-
-    // Filter data through our own comparator
-    const filteredData = data.filter((row) => compare(row, state));
-    return { data: filteredData, state };
+    return data.filter(row => compare(row, state));
   };
 }

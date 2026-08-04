@@ -18,7 +18,8 @@ export function cloneTemplate(templateId) {
 
     // Находим все элементы с атрибутом data-name и создаем объект,
     // где ключами являются значения data-name, а значениями - сами элементы
-    const elements = Array.from(clone.querySelectorAll('[data-name]')).reduce((acc, el) => {
+    const elements = Array.from(clone.querySelectorAll('[data-name]'))
+      .reduce((acc, el) => {
         acc[el.dataset.name] = el;
         return acc;
     }, {});

@@ -10,33 +10,32 @@ export const initPagination = (
 
   return (data, state, action) => {
     // @todo: #2.1 — посчитать количество страниц, объявить переменные и константы
-    const rowsPerPage = state.rowsPerPage;
+    const rowsPerPage = Math.max(1, parseInt(state.rowsPerPage, 10) || 20);
     const pageCount = Math.ceil(data.length / rowsPerPage);
-    let page = state.page;
+    let page = parseInt(state.page, 10) || 1;
 
     // @todo: #2.6 — обработать действия
-    if (action)
-      switch (action.name) {
-        case "prev":
-          page = Math.max(1, page - 1);
-          break;
-        case "next":
-          page = Math.min(pageCount, page + 1);
-          break;
-        case "first":
-          page = 1;
-          break;
-        case "last":
-          page = pageCount;
-          break;
-      }
+    if (action) switch (action.name) {
+      case "prev":
+        page = Math.max(1, page - 1);
+        break;
+      case "next":
+        page = Math.min(pageCount, page + 1);
+        break;
+      case "first":
+        page = 1;
+        break;
+      case "last":
+        page = pageCount;
+        break;
+    }
 
     // @todo: #2.4 — получить список видимых страниц и вывести их
-    const visiblePages = getPages(page, pageCount);
+    const visiblePages = getPages(page, pageCount, 5);
     pages.replaceChildren(
       ...visiblePages.map((pageNumber) => {
         const el = pageTemplate.cloneNode(true);
-        return createPage(el, pageNumber, page === page);
+        return createPage(el, pageNumber, pageNumber  === page);
       }),
     );
 
